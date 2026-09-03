@@ -1,0 +1,26 @@
+# 编译二进制产物 (Build Artifacts)
+reality-scanner
+reality-scanner.exe
+reality-scanner-*
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 临时与打包目录
+dist/
+build/
+*.tmp
+
+# 本地运行时数据缓存
+/data/
+*.log
+
+# 扫描导出结果文件
+reality_results.txt
+reality_results.csv
+*.csv.out
+
+# 系统文件
+.DS_Store
+Thumbs.db
