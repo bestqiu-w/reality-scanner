@@ -57,7 +57,7 @@
 
 本工具要求 **Go 1.21** 或更高版本。若您的电脑已安装 Go，可直接跳过此步：
 
-#### 🍎 macOS
+#### <img src="https://img.shields.io/badge/-macOS-000000?style=flat-square&logo=apple" height="18" align="center" /> macOS
 - **方式 A（推荐，使用 Homebrew）**：
   ```bash
   brew install go
@@ -65,13 +65,13 @@
 - **方式 B（官方安装包）**：
   前往 Go 官网 [go.dev/dl](https://go.dev/dl/) 下载 `.pkg` 安装包双击安装（Apple Silicon M系列选 `darwin-arm64`，Intel 芯片选 `darwin-amd64`）。
 
-#### 🪟 Windows
+#### <img src="https://img.shields.io/badge/-Windows-0078D6?style=flat-square&logo=windows&logoColor=white" height="18" align="center" /> Windows
 - **方式 A（官方安装包）**：
   前往 [go.dev/dl](https://go.dev/dl/) 下载 Windows 安装程序（`.msi`），双击一路点击“Next”完成安装。
 - **方式 B（使用包管理器）**：
   在 PowerShell 中运行：`winget install GoLang.Go`
 
-#### 🐧 Linux (Ubuntu / Debian / CentOS)
+#### <img src="https://img.shields.io/badge/-Linux-FCC624?style=flat-square&logo=linux&logoColor=black" height="18" align="center" /> Linux (Ubuntu / Debian / CentOS)
 - **Ubuntu / Debian**：
   ```bash
   sudo apt update && sudo apt install -y golang-go
@@ -144,7 +144,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o reality-scann
 
 将编译好的程序配置到系统全局路径，使您无需每次切换目录，在任意路径下直接输入 `reality-scanner` 即可调用：
 
-#### 🍎 macOS 用户
+#### <img src="https://img.shields.io/badge/-macOS-000000?style=flat-square&logo=apple" height="18" align="center" /> macOS 用户
 - **方法 A（系统命令目录拷贝，最推荐）**：
   ```bash
   sudo cp reality-scanner /usr/local/bin/
@@ -159,13 +159,13 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o reality-scann
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
   ```
 
-#### 🐧 Linux 用户 (VPS / 服务器)
+#### <img src="https://img.shields.io/badge/-Linux-FCC624?style=flat-square&logo=linux&logoColor=black" height="18" align="center" /> Linux 用户 (VPS / 服务器)
 ```bash
 # 直接安装至系统命令目录
 sudo cp reality-scanner /usr/local/bin/ && sudo chmod +x /usr/local/bin/reality-scanner
 ```
 
-#### 🪟 Windows 用户 (PowerShell / CMD)
+#### <img src="https://img.shields.io/badge/-Windows-0078D6?style=flat-square&logo=windows&logoColor=white" height="18" align="center" /> Windows 用户 (PowerShell / CMD)
 - **方法 A（PowerShell 一行命令配置用户 Path，最推荐）**：
   ```powershell
   # 1. 创建固定存放目录并将编译好的 exe 放进去
@@ -188,7 +188,7 @@ sudo cp reality-scanner /usr/local/bin/ && sudo chmod +x /usr/local/bin/reality-
 
 如果您觉得输入完整的 `reality-scanner` 较长，可以配置一个超短别名 `rs`：
 
-#### 🍎 macOS / 🐧 Linux 用户
+#### <img src="https://img.shields.io/badge/-macOS-000000?style=flat-square&logo=apple" height="18" align="center" /> macOS / <img src="https://img.shields.io/badge/-Linux-FCC624?style=flat-square&logo=linux&logoColor=black" height="18" align="center" /> Linux 用户
 ```bash
 # 如果当前使用的是 Zsh (macOS 默认)
 echo "alias rs='reality-scanner'" >> ~/.zshrc && source ~/.zshrc
@@ -201,7 +201,7 @@ echo "alias rs='reality-scanner'" >> ~/.bashrc && source ~/.bashrc
 sudo ln -sf /usr/local/bin/reality-scanner /usr/local/bin/rs
 ```
 
-#### 🪟 Windows 用户
+#### <img src="https://img.shields.io/badge/-Windows-0078D6?style=flat-square&logo=windows&logoColor=white" height="18" align="center" /> Windows 用户
 直接在工具存放目录下将可执行文件复制一份为 `rs.exe`（在 CMD、PowerShell 与 Git Bash 下均可原生调用）：
 ```powershell
 Copy-Item "C:\Tools\reality-scanner\reality-scanner.exe" "C:\Tools\reality-scanner\rs.exe"
