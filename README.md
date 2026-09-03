@@ -1,12 +1,21 @@
 # reality-scanner
 
-**Reality 协议目标网站扫描与质量评估一体化工具**
+<p align="center">
+  <strong>⚡ Reality 协议目标网站扫描与质量评估一体化工具 ⚡</strong>
+</p>
 
-> 整合并重构了 GitHub 开源项目 [RealiTLScanner](https://github.com/XTLS/RealiTLScanner) 与 [RealityChecker](https://github.com/V2RaySSR/RealityChecker)，修复所有历史遗留漏洞，支持全自动流式扫描、DNS 正向交叉一致性检验与全功能质量评估。
+<p align="center">
+  <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-1.21%2B-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MPL_2.0-blue.svg?style=flat-square" alt="License"></a>
+  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey?style=flat-square" alt="Platform">
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+</p>
+
+> 整合并深度重构了 GitHub 开源项目 [RealiTLScanner](https://github.com/XTLS/RealiTLScanner) 与 [RealityChecker](https://github.com/V2RaySSR/RealityChecker)，修复所有历史遗留漏洞，支持全自动流式扫描、DNS 正向交叉一致性检验与全功能质量评估。
 
 ---
 
-## ✨ 核心特性
+## ⚡ 核心特性
 
 - 🚀 **一体化全自动流水线**：一条命令即可自动从 VPS 邻近网段扫描开启 TLS 1.3 的服务，直接进入 Reality 过滤评估，免去中间繁琐的 CSV 导入导出。
 - 🔍 **DNS 正向交叉一致性检验**：
@@ -33,20 +42,22 @@
 
 ## 🚀 一条龙快速上手指南
 
-按照以下流程，即可完成从零安装 Go、项目编译、配置全局终端随处可用以及实战运行的全过程：
+按照以下流程，即可完成从环境准备、项目编译、配置全局终端随处可用以及实战运行的全过程：
 
-```
-[步骤 1: 环境准备] ➔ [步骤 2: 项目编译] ➔ [步骤 3: 全局配置] ➔ [步骤 4: 可选别名] ➔ [步骤 5: 实战运行]
- (安装 Go 环境)      (本机/跨平台编译)     (随时随地可用)       (缩写为 rs)        (扫描与质量评估)
+```text
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│ 1. 环境准备  │ ──> │ 2. 项目编译  │ ──> │ 3. 全局配置  │ ──> │ 4. 别名设置  │ ──> │ 5. 实战运行  │
+│   安装 Go    │     │  本机/跨平台 │     │ 终端随处可用 │     │  缩写为 rs   │     │ 扫描与质量评估│
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
 ```
 
 ---
 
-### 步骤 1：环境准备（安装 Go 语言）
+### 1️⃣ 环境准备：安装 Go 语言
 
-本工具要求 **Go 1.21** 或更高版本。若您的电脑已安装 Go，可跳过此步；若尚未安装，请按对应系统选择安装方式：
+本工具要求 **Go 1.21** 或更高版本。若您的电脑已安装 Go，可直接跳过此步：
 
-#### 🍏 macOS
+#### 🍎 macOS
 - **方式 A（推荐，使用 Homebrew）**：
   ```bash
   brew install go
@@ -73,23 +84,25 @@
   ```
 
 #### 验证与国内模块加速
-安装完成后在终端验证：
+安装完成后在终端验证版本：
 ```bash
 go version
 # 预期输出类似：go version go1.22.x darwin/arm64
 ```
-> 💡 **国内网络加速提示**：如果您在国内网络环境下，建议配置国内 Go 模块代理：
+
+> [!TIP]
+> **国内网络加速提示**：如果您在国内网络环境下编译，建议配置国内 Go 模块代理以加速依赖拉取：
 > ```bash
 > go env -w GOPROXY=https://goproxy.cn,direct
 > ```
 
 ---
 
-### 步骤 2：项目编译
+### 2️⃣ 项目编译：本机与跨平台构建
 
 进入项目根目录：
 ```bash
-git clone https://github.com/您的用户名/reality-scanner.git
+git clone https://github.com/bestqiu-w/reality-scanner.git
 cd reality-scanner
 ```
 
@@ -104,13 +117,13 @@ go build -ldflags="-s -w" -o reality-scanner.exe main.go
 ```
 
 #### （可选进阶）跨平台交叉编译
-得益于 Go 的交叉编译特性，您可以在当前电脑上一键编译出适合其他操作系统的可执行文件：
+得益于 Go 卓越的交叉编译特性，您可以在当前电脑上一键编译出适合其他操作系统的可执行程序：
 
 ```bash
 # 交叉编译 Windows 64位 (.exe)
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o reality-scanner.exe main.go
 
-# 交叉编译 macOS 通用二进制 (Universal Binary，一份文件兼容 M 系列芯片与 Intel 芯片)
+# 交叉编译 macOS 通用二进制 (Universal Binary，单文件同时原生支持 M 系列芯片与 Intel 芯片)
 CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o rs-arm64 main.go
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o rs-amd64 main.go
 lipo -create -output reality-scanner rs-arm64 rs-amd64 && rm rs-arm64 rs-amd64
@@ -119,18 +132,19 @@ lipo -create -output reality-scanner rs-arm64 rs-amd64 && rm rs-arm64 rs-amd64
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o reality-scanner-linux-amd64 main.go
 ```
 
-> **编译参数解释**：
-> - `CGO_ENABLED=0`：纯静态编译，生成物在任何同架构机器上均可直接运行，零依赖；
-> - `-ldflags="-s -w"`：剥离符号表和调试信息，将文件体积缩减约 35%；
-> - `//go:embed`：GeoIP 数据库与所有规则库均已内嵌，生成的可执行文件拷贝到任何地方都能独立完整运行。
+> [!NOTE]
+> **编译参数说明**：
+> - `CGO_ENABLED=0`：纯静态编译，生成物无任何动态 libc 依赖，在任何 Linux 发行版上均可直接运行；
+> - `-ldflags="-s -w"`：剥离符号表和调试符号，将二进制体积缩减约 35%；
+> - `//go:embed`：GeoIP 数据库与规则库在编译时全部打包进二进制中，拷贝单文件即可独立运行。
 
 ---
 
-### 步骤 3：配置全局环境（终端随处可用）
+### 3️⃣ 全局配置：终端随时随地调用
 
 将编译好的程序配置到系统全局路径，使您无需每次切换目录，在任意路径下直接输入 `reality-scanner` 即可调用：
 
-#### 🍏 macOS 用户
+#### 🍎 macOS 用户
 - **方法 A（系统命令目录拷贝，最推荐）**：
   ```bash
   sudo cp reality-scanner /usr/local/bin/
@@ -139,7 +153,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o reality-scann
   ```bash
   sudo ln -sf "$(pwd)/reality-scanner" /usr/local/bin/reality-scanner
   ```
-- **方法 C（免 sudo 权限，配置用户专属目录）**：
+- **方法 C（免 sudo 权限，用户专属目录）**：
   ```bash
   mkdir -p ~/.local/bin && cp reality-scanner ~/.local/bin/
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
@@ -147,7 +161,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o reality-scann
 
 #### 🐧 Linux 用户 (VPS / 服务器)
 ```bash
-# 直接安装至 /usr/local/bin
+# 直接安装至系统命令目录
 sudo cp reality-scanner /usr/local/bin/ && sudo chmod +x /usr/local/bin/reality-scanner
 ```
 
@@ -165,16 +179,16 @@ sudo cp reality-scanner /usr/local/bin/ && sudo chmod +x /usr/local/bin/reality-
   1. 将 `reality-scanner.exe` 放入固定目录（如 `C:\Tools\`）；
   2. 按快捷键 `Win + R`，输入 `sysdm.cpl` 回车打开系统属性；
   3. 点击 **“高级”** ➔ **“环境变量”** ➔ 在“用户变量”中双击 **`Path`** ➔ 点击 **“新建”** ➔ 填入 `C:\Tools` ➔ 确定保存。
-- **方法 C（极速法）**：
+- **方法 C（免配置快捷法）**：
   以管理员身份直接将 `reality-scanner.exe` 复制到 `C:\Windows\System32\` 目录（该目录默认在系统 PATH 中，即刻全局生效）。
 
 ---
 
-### 步骤 4：（可选）配置极短命令别名（缩写为 `rs`）
+### 4️⃣ 命令别名：配置极短别名（可选）
 
 如果您觉得输入完整的 `reality-scanner` 较长，可以配置一个超短别名 `rs`：
 
-#### 🍏 macOS / 🐧 Linux 用户
+#### 🍎 macOS / 🐧 Linux 用户
 ```bash
 # 如果当前使用的是 Zsh (macOS 默认)
 echo "alias rs='reality-scanner'" >> ~/.zshrc && source ~/.zshrc
@@ -195,7 +209,7 @@ Copy-Item "C:\Tools\reality-scanner\reality-scanner.exe" "C:\Tools\reality-scann
 
 ---
 
-### 步骤 5：实战运行与常用命令
+### 5️⃣ 实战运行：常用命令与示例
 
 新打开任意一个终端窗口，脱离项目根目录，即可随时使用：
 
@@ -240,11 +254,11 @@ reality-scanner update
 
 ---
 
-## 📊 质量评估指标说明
+## 📊 Reality 伪装质量评估指标说明
 
 | 指标 | 达标要求 | 说明 |
 | :--- | :--- | :--- |
-| **基础指标** | TLS 1.3 + X25519 + HTTP/2 + SNI 匹配 | Reality 协议的**硬性技术门槛**，有一项不满足即被判定为“不适合”。 |
+| **基础指标** | TLS 1.3 + X25519 + HTTP/2 + SNI 匹配 | Reality 协议的**硬性技术门槛**，有一项不满足即被判定为“不符（不适合）”。 |
 | **DNS 匹配** | 直连 (1:1) / 同C段 为最佳 | 通过公网权威 DNS 交叉验证。直连目标赋予 ★★★★★，套 CDN 源站降权，无解析域名直接剔除。 |
 | **握手耗时** | <= 200ms 为优秀 | 握手越快，连接延迟越低，越推荐。 |
 | **证书天数** | >= 60天为充沛 | 证书剩余有效期越长，伪装目标长期有效性越好。 |
