@@ -92,9 +92,9 @@ func FormatTable(results []*model.DetectionResult) string {
 		if res.HandshakeTime > 0 {
 			ms := res.HandshakeTime.Milliseconds()
 			handshakeText = fmt.Sprintf("%dms", ms)
-			if ms <= 200 {
+			if ms <= 300 {
 				handshakeText = text.FgGreen.Sprint(handshakeText)
-			} else if ms <= 500 {
+			} else if ms <= 650 {
 				handshakeText = text.FgYellow.Sprint(handshakeText)
 			} else {
 				handshakeText = text.FgRed.Sprint(handshakeText)

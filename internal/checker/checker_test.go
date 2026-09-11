@@ -120,8 +120,8 @@ func TestEvaluateSuitabilityWeighted(t *testing.T) {
 		DNSMatchLevel:       "subnet",
 	}
 	EvaluateSuitability(good)
-	if !good.Suitable || good.Score != 84.0 || good.Stars != 4 {
-		t.Errorf("expected score 84.0 with 4 stars, got %.1f score, %d stars", good.Score, good.Stars)
+	if !good.Suitable || good.Score != 87.0 || good.Stars != 4 {
+		t.Errorf("expected score 87.0 with 4 stars, got %.1f score, %d stars", good.Score, good.Stars)
 	}
 
 	// 3. 一票否决目标 (不支持 TLS 1.3 -> 0分 / 不适合)

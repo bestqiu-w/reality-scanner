@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"sort"
+	"time"
 
 	"reality-scanner/internal/model"
 )
@@ -136,27 +137,8 @@ func EvaluateSuitability(res *model.DetectionResult) {
 		}
 	}
 
-	// ③ 维度 3: 握手与 RTT 时延 (满分 20 分 - 回落拟真度与建连体验)
-	var latencyScore float64
-	if res.HandshakeTime > 0 {
-		ms := res.HandshakeTime.Milliseconds()
-		switch {
-		case ms <= 50:
-			latencyScore = 20.0
-		case ms <= 100:
-			latencyScore = 17.0
-		case ms <= 200:
-			latencyScore = 13.0
-		case ms <= 350:
-			latencyScore = 8.0
-		case ms <= 600:
-			latencyScore = 4.0
-		default:
-			latencyScore = 1.0
-		}
-	} else {
-		latencyScore = 1.0
-	}
+	// ③ 维度 3: 握手与 RTT 时延 (满分 20 分 - 本地电脑跨洋公网宽松平滑线性插值，杜绝断崖)
+	latencyScore := calcLatencyScore(res.HandshakeTime)
 
 	// ④ 维度 4: 域名冷门度/非大厂 (满分 15 分 - 防从众效应与定点审计)
 	var hotScore float64
@@ -246,4 +228,47 @@ func SortResultsByStars(results []*model.DetectionResult) {
 		// 3. 星级相同时按握手延迟升序 (低延迟在前)
 		return results[i].HandshakeTime < results[j].HandshakeTime
 	})
+}
+
+// calcLatencyScore 专为本地电脑跨网段/跨洋探测设计的宽松平滑线性插值算法 (满分 20 分)
+// 彻底消除阶梯临界断崖，让分数随毫秒数平滑连续过渡
+func calcLatencyScore(d time.Duration) float64 {
+	if d <= 0 {
+		return 1.0
+	}
+	ms := float64(d.Milliseconds())
+
+	type point struct {
+		ms    float64
+		score float64
+	}
+
+	// 关键物理锚点:
+	// - 150ms 以内: 亚太优质直连或本土极速链路，满分 20.0
+	// - 150 ~ 350ms: 美西等跨洋直连优质公网，平滑衰减至 16.0
+	// - 350 ~ 650ms: 普通跨洋长链路标准时延 (TCP+TLS两次往返)，平滑衰减至 10.0
+	// - 650 ~ 1000ms: 轻度拥塞或绕路，平滑衰减至 5.0
+	// - 1000 ~ 1500ms: 严重延迟，平滑衰减至 1.0
+	points := []point{
+		{ms: 150.0, score: 20.0},
+		{ms: 350.0, score: 16.0},
+		{ms: 650.0, score: 10.0},
+		{ms: 1000.0, score: 5.0},
+		{ms: 1500.0, score: 1.0},
+	}
+
+	if ms <= points[0].ms {
+		return points[0].score
+	}
+
+	for i := 0; i < len(points)-1; i++ {
+		p1 := points[i]
+		p2 := points[i+1]
+		if ms <= p2.ms {
+			// 线性插值公式
+			return p1.score - (ms-p1.ms)*(p1.score-p2.score)/(p2.ms-p1.ms)
+		}
+	}
+
+	return 1.0
 }
