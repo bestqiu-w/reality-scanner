@@ -43,7 +43,14 @@ func ExecuteCheck(args []string) {
 	fmt.Printf(" - 归属国家/地区: %s (境内: %v)\n", res.Country, res.IsDomestic)
 	fmt.Printf(" - HTTP 状态码: %d\n", res.StatusCode)
 	if res.Suitable {
-		fmt.Printf(" - 综合量化评分: %.1f / 100 [推荐星级: %s]\n", res.Score, strings.Repeat("★", res.Stars))
+		starsCount := res.Stars
+		if starsCount < 1 {
+			starsCount = 1
+		} else if starsCount > 5 {
+			starsCount = 5
+		}
+		starStr := strings.Repeat("★", starsCount) + strings.Repeat("☆", 5-starsCount)
+		fmt.Printf(" - 综合量化评分: %.1f / 100 [推荐星级: %s]\n", res.Score, starStr)
 		if len(res.ScoreDetail) > 0 {
 			fmt.Printf(" - 评分细则拆解: DNS一致性: %.1f/30 | CDN隐蔽度: %.1f/25 | 握手时延: %.1f/20 | 域名冷门度: %.1f/15 | 证书长效: %.1f/10\n",
 				res.ScoreDetail["dns"], res.ScoreDetail["cdn"], res.ScoreDetail["latency"], res.ScoreDetail["hot"], res.ScoreDetail["cert"])

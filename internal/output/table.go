@@ -154,10 +154,17 @@ func FormatTable(results []*model.DetectionResult) string {
 			scoreText = text.FgRed.Sprint("-")
 		}
 
-		// 推荐星级
+		// 推荐星级 (固定 5 字符等宽显示：实心星 + 空心星，彻底解决单星字体形变问题)
 		var starsText string
 		if res.Suitable {
-			starsText = text.FgYellow.Sprint(strings.Repeat("★", res.Stars))
+			starsCount := res.Stars
+			if starsCount < 1 {
+				starsCount = 1
+			} else if starsCount > 5 {
+				starsCount = 5
+			}
+			starStr := strings.Repeat("★", starsCount) + strings.Repeat("☆", 5-starsCount)
+			starsText = text.FgYellow.Sprint(starStr)
 		} else {
 			starsText = text.FgRed.Sprint("不适合")
 		}

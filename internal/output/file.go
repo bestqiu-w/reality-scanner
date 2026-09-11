@@ -54,7 +54,13 @@ func SaveTextReport(filePath string, results []*model.DetectionResult) error {
 				targetIP = "公网解析"
 			}
 
-			stars := strings.Repeat("★", r.Stars)
+			starsCount := r.Stars
+			if starsCount < 1 {
+				starsCount = 1
+			} else if starsCount > 5 {
+				starsCount = 5
+			}
+			stars := strings.Repeat("★", starsCount) + strings.Repeat("☆", 5-starsCount)
 			cdnDesc := "无 (强烈推荐)"
 			if r.IsCDN {
 				cdnDesc = fmt.Sprintf("有 (%s置信度)", r.CDNConfidence)
