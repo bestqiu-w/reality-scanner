@@ -56,10 +56,12 @@ type DetectionResult struct {
 	Domain     string        `json:"domain"`
 	TargetIP   string        `json:"target_ip"` // 关联的探测 IP
 	Suitable   bool          `json:"suitable"`  // 是否符合 Reality 要求
-	Stars      int           `json:"stars"`     // 推荐星级 1-5
-	Duration   time.Duration `json:"duration"`  // 总耗时
-	Error      error         `json:"error,omitempty"`
-	EarlyExit  bool          `json:"early_exit"`
+	Stars       int                `json:"stars"`        // 推荐星级 1-5
+	Score       float64            `json:"score"`        // 综合量化得分 0-100
+	ScoreDetail map[string]float64 `json:"score_detail"` // 各维度细分打分
+	Duration    time.Duration      `json:"duration"`     // 总耗时
+	Error       error              `json:"error,omitempty"`
+	EarlyExit   bool               `json:"early_exit"`
 
 	// 网络与重定向检测
 	Accessible    bool     `json:"accessible"`

@@ -22,7 +22,7 @@ func FormatTable(results []*model.DetectionResult) string {
 
 	// 表头
 	t.AppendHeader(table.Row{
-		"最终域名", "关联IP", "DNS匹配", "基础指标", "握手耗时", "证书天数", "CDN特征", "热门", "推荐星级", "状态",
+		"最终域名", "关联IP", "DNS匹配", "基础指标", "握手耗时", "证书天数", "CDN特征", "热门", "综合评分", "星级", "状态",
 	})
 
 	t.SetStyle(table.StyleDefault)
@@ -44,7 +44,8 @@ func FormatTable(results []*model.DetectionResult) string {
 		{Name: "证书天数", Align: text.AlignCenter},
 		{Name: "CDN特征", Align: text.AlignCenter},
 		{Name: "热门", Align: text.AlignCenter},
-		{Name: "推荐星级", Align: text.AlignCenter},
+		{Name: "综合评分", Align: text.AlignCenter},
+		{Name: "星级", Align: text.AlignCenter},
 		{Name: "状态", Align: text.AlignCenter},
 	})
 
@@ -133,6 +134,26 @@ func FormatTable(results []*model.DetectionResult) string {
 			hotText = text.FgGreen.Sprint("否")
 		}
 
+		// 综合评分
+		var scoreText string
+		if res.Suitable {
+			scoreVal := fmt.Sprintf("%.1f", res.Score)
+			switch {
+			case res.Score >= 90.0:
+				scoreText = text.FgHiGreen.Sprint(scoreVal)
+			case res.Score >= 80.0:
+				scoreText = text.FgGreen.Sprint(scoreVal)
+			case res.Score >= 70.0:
+				scoreText = text.FgYellow.Sprint(scoreVal)
+			case res.Score >= 60.0:
+				scoreText = text.FgHiYellow.Sprint(scoreVal)
+			default:
+				scoreText = text.FgRed.Sprint(scoreVal)
+			}
+		} else {
+			scoreText = text.FgRed.Sprint("-")
+		}
+
 		// 推荐星级
 		var starsText string
 		if res.Suitable {
@@ -168,6 +189,7 @@ func FormatTable(results []*model.DetectionResult) string {
 			certText,
 			cdnText,
 			hotText,
+			scoreText,
 			starsText,
 			statusText,
 		})

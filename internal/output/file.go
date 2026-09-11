@@ -65,7 +65,11 @@ func SaveTextReport(filePath string, results []*model.DetectionResult) error {
 			}
 
 			sb.WriteString(fmt.Sprintf("[%d] 域名: %s\n", rank, domain))
-			sb.WriteString(fmt.Sprintf("    推荐星级: %s\n", stars))
+			sb.WriteString(fmt.Sprintf("    综合评分: %.1f / 100 [推荐星级: %s]\n", r.Score, stars))
+			if len(r.ScoreDetail) > 0 {
+				sb.WriteString(fmt.Sprintf("    打分细则: DNS一致性: %.1f/30 | CDN隐蔽度: %.1f/25 | 握手时延: %.1f/20 | 域名冷门度: %.1f/15 | 证书长效: %.1f/10\n",
+					r.ScoreDetail["dns"], r.ScoreDetail["cdn"], r.ScoreDetail["latency"], r.ScoreDetail["hot"], r.ScoreDetail["cert"]))
+			}
 			sb.WriteString(fmt.Sprintf("    关联探测IP: %s\n", targetIP))
 			sb.WriteString(fmt.Sprintf("    DNS一致性: %s (公网解析: %s)\n", r.DNSMatchDesc, strings.Join(r.ResolvedIPs, ", ")))
 			sb.WriteString(fmt.Sprintf("    握手耗时: %dms\n", r.HandshakeTime.Milliseconds()))
@@ -95,7 +99,7 @@ func SaveCSV(filePath string, results []*model.DetectionResult) error {
 
 	// 表头
 	header := []string{
-		"DOMAIN", "TARGET_IP", "DNS_MATCH", "RESOLVED_IPS", "SUITABLE", "STARS", "HANDSHAKE_MS",
+		"DOMAIN", "TARGET_IP", "SCORE", "STARS", "DNS_MATCH", "RESOLVED_IPS", "SUITABLE", "HANDSHAKE_MS",
 		"CERT_DAYS", "CERT_ISSUER", "IS_CDN", "CDN_CONFIDENCE", "IS_HOT", "STATUS_CODE",
 	}
 	if err := w.Write(header); err != nil {
@@ -111,10 +115,11 @@ func SaveCSV(filePath string, results []*model.DetectionResult) error {
 		record := []string{
 			domain,
 			r.TargetIP,
+			fmt.Sprintf("%.1f", r.Score),
+			strconv.Itoa(r.Stars),
 			r.DNSMatchDesc,
 			strings.Join(r.ResolvedIPs, ";"),
 			strconv.FormatBool(r.Suitable),
-			strconv.Itoa(r.Stars),
 			strconv.FormatInt(r.HandshakeTime.Milliseconds(), 10),
 			strconv.Itoa(r.CertDaysUntilExpiry),
 			r.CertIssuer,
